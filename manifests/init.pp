@@ -51,7 +51,10 @@ class nginx(
       }
 
       homebrew::formula {
-        'lua-nginx-module': source => 'puppet:///modules/nginx/brews/lua-nginx-module.rb' ;
+        'lua-nginx-module':
+          source => 'puppet:///modules/nginx/brews/lua-nginx-module.rb',
+          before => Homebrew::Formula['nginx']
+          ;
       }
 
       homebrew::formula { 'nginx':
