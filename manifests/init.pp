@@ -50,12 +50,12 @@ class nginx(
         source  => 'puppet:///modules/nginx/config/nginx/public'
       }
 
-      homebrew::formula { 'nginx':
-        before => Package['boxen/brews/nginx'],
-      }
-
       homebrew::formula { 'lua-nginx-module':
         before => Package['boxen/brews/lua-nginx-module'],
+      }
+
+      homebrew::formula { 'nginx':
+        before => Package['boxen/brews/nginx'],
       }
 
       package { 'boxen/brews/nginx':
