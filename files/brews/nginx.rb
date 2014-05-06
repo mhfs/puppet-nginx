@@ -7,7 +7,6 @@ class Nginx < Formula
   version '1.4.4-boxen1'
 
   depends_on 'pcre'
-  depends_on "lua-nginx-module"
 
   skip_clean 'logs'
 
@@ -50,7 +49,7 @@ class Nginx < Formula
     args << "--with-http_gzip_static_module" if ARGV.include? '--with-gzip-static'
 
     # Set proper luajit env vars
-    luajit_path = `brew --prefix luajit`.chomp
+    luajit_path = "/opt/boxen/homebrew/opt/luajit"
     ENV['LUAJIT_LIB'] = "#{luajit_path}/lib"
     ENV['LUAJIT_INC'] = "#{luajit_path}/include/luajit-2.0"
 
