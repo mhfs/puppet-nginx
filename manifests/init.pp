@@ -54,6 +54,10 @@ class nginx(
         before => Package['boxen/brews/nginx'],
       }
 
+      homebrew::formula { 'lua-nginx-module':
+        before => Package['boxen/brews/lua-nginx-module'],
+      }
+
       package { 'boxen/brews/nginx':
         ensure => '1.4.4-boxen1',
         notify => Service['dev.nginx']

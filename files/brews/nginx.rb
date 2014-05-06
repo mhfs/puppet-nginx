@@ -7,6 +7,7 @@ class Nginx < Formula
   version '1.4.4-boxen1'
 
   depends_on 'pcre'
+  depends_on "lua-nginx-module"
 
   skip_clean 'logs'
 
@@ -14,7 +15,7 @@ class Nginx < Formula
     [
       ['--with-passenger',   "Compile with support for Phusion Passenger module"],
       ['--with-webdav',      "Compile with support for WebDAV module"],
-      ['--with-gzip-static', "Compile with support for Gzip Static module"]
+      ['--with-gzip-static', "Compile with support for Gzip Static module"],
     ]
   end
 
@@ -40,11 +41,18 @@ class Nginx < Formula
             "--with-ld-opt='-L#{HOMEBREW_PREFIX}/lib'",
             "--conf-path=/opt/boxen/config/nginx/nginx.conf",
             "--pid-path=/opt/boxen/data/nginx/nginx.pid",
-            "--lock-path=/opt/boxen/data/nginx/nginx.lock"]
+            "--lock-path=/opt/boxen/data/nginx/nginx.lock",
+            "--add-module=#{HOMEBREW_PREFIX}/share/lua-nginx-module"
+    ]
 
     args << passenger_config_args if ARGV.include? '--with-passenger'
     args << "--with-http_dav_module" if ARGV.include? '--with-webdav'
     args << "--with-http_gzip_static_module" if ARGV.include? '--with-gzip-static'
+
+    # Set proper luajit env vars
+    luajit_path = `brew --prefix luajit`.chomp
+    ENV['LUAJIT_LIB'] = "#{luajit_path}/lib"
+    ENV['LUAJIT_INC'] = "#{luajit_path}/include/luajit-2.0"
 
     system "./configure", *args
     system "make"
